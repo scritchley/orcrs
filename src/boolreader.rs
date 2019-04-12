@@ -56,20 +56,25 @@ impl<R: Read> Iterator for BoolReader<R> {
     }
 }
 
+
 #[cfg(test)]
 mod tests {
     use super::BoolReader;
-    #[test]
-    fn bool_reader() {
-        let b = vec![0xffu8, 0x80u8];
-        let expected = vec![true, false, false, false, false, false, false, false];
-        let r = BoolReader::new(&*b);
-        let mut len = 0;
-        for i in r {
-            // println!("{}, {}", i, expected[len]);
-            assert_eq!(i, expected[len]);
-            len+=1;
-        }
-        assert_eq!(len, 8);
+    macro_rules! test_equal {
+        ($name:ident, $input:expr, $expected:expr) => {
+            #[test]
+            fn $name() {
+                let input = $input.to_vec();
+                let expected = $expected.to_vec();
+                let r = BoolReader::new(&*input);
+                let mut l = 0;
+                for i in r {
+                    assert_eq!(i, expected[l]);
+                    l += 1;
+                }
+                assert_eq!(l, expected.len());
+            }
+        };
     }
+    test_equal!(test_bool_reader, [0xffu8, 0x80u8], [true, false, false, false, false, false, false, false]);
 }

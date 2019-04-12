@@ -5,3 +5,4 @@ authors = ["Simon Critchley <sicritchley@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+integer-encoding = "1.0.5"

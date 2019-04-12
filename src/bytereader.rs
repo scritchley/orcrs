@@ -70,27 +70,26 @@ impl<R: Read> Iterator for ByteReader<R> {
     }
 }
 
-macro_rules! test_equal {
-    ($name:ident, $input:expr, $expected:expr) => {
-        #[test]
-        fn $name() {
-            let input = $input.to_vec();
-            let expected = $expected.to_vec();
-            let r = ByteReader::new(&*input);
-            let mut l = 0;
-            for i in r {
-                assert_eq!(i, expected[l]);
-                l += 1;
-            }
-            assert_eq!(l, expected.len());
-        }
-    };
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    macro_rules! test_equal {
+        ($name:ident, $input:expr, $expected:expr) => {
+            #[test]
+            fn $name() {
+                let input = $input.to_vec();
+                let expected = $expected.to_vec();
+                let r = ByteReader::new(&*input);
+                let mut l = 0;
+                for i in r {
+                    assert_eq!(i, expected[l]);
+                    l += 1;
+                }
+                assert_eq!(l, expected.len());
+            }
+        };
+    }
     test_equal!(test_100_zeros, [0x61u8, 0x00u8], [0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8,0u8]);
     test_equal!(test_4_ones, [1u8, 1u8], [1u8,1u8,1u8,1u8]);
-    test_equal!(test_literals, [0xFEu8, 0x44u8, 0x45u8], [0x44u8, 0x45u8]);
+    test_equal!(test_literals, [0xfeu8, 0x44u8, 0x45u8], [0x44u8, 0x45u8]);
 }
